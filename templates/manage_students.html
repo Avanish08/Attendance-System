@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Students</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h2 { color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background: #4CAF50; color: white; }
+    form { margin-top: 20px; }
+    input, select, button { padding: 8px; margin: 5px; }
+    .btn { background: #4CAF50; color: white; border: none; cursor: pointer; }
+    .btn:hover { background: #45a049; }
+    .delete-btn { background: red; color: white; padding: 5px 10px; text-decoration: none; }
+    .delete-btn:hover { background: darkred; }
+    .nav-btn { margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+  <a href="{{ url_for('dashboard') }}" class="btn nav-btn">⬅ Back to Dashboard</a>
+  <h2>Manage Students</h2>
+
+  <!-- Add Student Form -->
+  <form method="POST">
+    <input type="text" name="rollno" placeholder="Roll No" required>
+    <input type="text" name="name" placeholder="Student Name" required>
+    <select name="year" required>
+ 
+      <option value="SE">SE</option>
+      <option value="TE">TE</option>
+      <option value="BE">BE</option>
+    </select>
+    <input type="text" name="department" placeholder="Department" required>
+    <button type="submit" class="btn">Add Student</button>
+  </form>
+
+  <!-- Student List -->
+  <table>
+    <tr>
+      <th>Roll No</th>
+      <th>Name</th>
+      <th>Year</th>
+      <th>Department</th>
+      <th>Action</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+      <td>{{ student.rollno }}</td>
+      <td>{{ student.name }}</td>
+      <td>{{ student.year }}</td>
+      <td>{{ student.department }}</td>
+      <td>
+        <a href="{{ url_for('delete_student', id=student._id) }}" class="delete-btn">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Attendance System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .card-hover {
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .card-hover:hover {
+      transform: translateY(-8px);
+      box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Attendance System</a>
+      <div class="d-flex">
+        <a href="/logout" class="btn btn-light btn-sm">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <h3 class="mb-4">Welcome, {{ username }} ({{ role }})</h3>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <a href="/attendance/mark" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-success text-white">
+            <h4>Mark Attendance</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="/attendance/view" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-primary text-white">
+            <h4>Show Attendance</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="/timetable/view" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-warning text-dark">
+            <h4>Show Timetable</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="/timetable/add" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-info text-white">
+            <h4>Add/Edit Timetable</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="/student/manage" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-secondary text-white">
+            <h4>Manage Students</h4>
+          </div>
+        </a>
+      </div>
+
+      <div class="col-md-4">
+        <a href="/subject/manage" class="text-decoration-none">
+          <div class="card card-hover p-4 text-center bg-danger text-white">
+            <h4>Manage Subjects</h4>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
