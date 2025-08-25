@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash
 from pymongo import MongoClient
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://akdis0302:B1xvoFJIp6V88PrS@cluster0.ydzfxbm.mongodb.net/")
+client = MongoClient("YOUR MONGO DB ADDRESS")
 db = client["attendance_db"]
 users_col = db["users"]
 
@@ -14,8 +14,8 @@ users = [
         "role": "super_admin"   
     },
     {
-        "username": "Vimeetadmin",
-        "password": generate_password_hash("Vimeet123"),  
+        "username": "admin",
+        "password": generate_password_hash("admin@123"),  
         "role": "admin"
     }
 ]
@@ -26,3 +26,4 @@ for u in users:
         print(f"User {u['username']} created.")
     else:
         print(f"User {u['username']} already exists.")
+
