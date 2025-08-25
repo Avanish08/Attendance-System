@@ -1,9 +1,4 @@
-Got it 🚀
-Here’s a simple but professional **`README.md`** you can put at the root of your project:
 
----
-
-# 🎓 AIML Department Attendance & Timetable Management
 
 This project is a **desktop-based web app** built with **Flask + MongoDB + PyWebView**, designed for managing students, subjects, attendance, and timetables for the **AIML department** (S.E, T.E, B.E).
 
@@ -142,5 +137,6 @@ Output will be inside the `dist/` folder.
 Developed for **Avanish Ojha** attendance and timetable automation.
 
 ---
+
 
 
