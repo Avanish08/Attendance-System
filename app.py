@@ -15,8 +15,7 @@ app.secret_key = "super_secret_key"
 
 # Initialize login manager
 login_manager.init_app(app)
-login_manager.login_view = "login"  # redirect here if not logged in
-
+login_manager.login_view = "login"  
 
 # ========== Auth ==========
 @app.route("/")
@@ -96,7 +95,7 @@ def manage_subjects():
     if request.method == "POST":
         db.subjects.insert_one({
             "subject_name": request.form["subject_name"],
-            "type": request.form["type"],  # "theory" or "practical"
+            "type": request.form["type"],
             "year": request.form["year"],
             "department": request.form["department"]
         })
@@ -187,15 +186,14 @@ def mark_attendance():
     if current_user.role not in ["admin", "super_admin", "superadmin"]:
         return "Unauthorized", 403
 
-    # read selection (GET for loading, POST preserves via hidden inputs)
+  
     dept = request.values.get("department", "AIML")
     year = request.values.get("year", "SE")
 
-    # fetch students and subjects for this dept+year
+
     students_cur = db.students.find({"department": dept, "year": year}).sort("rollno", 1)
     subjects_cur = db.subjects.find({"department": dept, "year": year}).sort("subject_name", 1)
 
-    # convert ObjectIds to strings for safe use in HTML names/values
     students = [{"_id": str(s["_id"]), "rollno": s.get("rollno", ""), "name": s.get("name", "")}
                 for s in students_cur]
     subjects = [{"_id": str(x["_id"]), "subject_name": x.get("subject_name", ""),
@@ -203,7 +201,7 @@ def mark_attendance():
                 for x in subjects_cur]
 
     if request.method == "POST":
-        # we will store marks under a 'marks' dict: {subject_id: int}
+     
         student_ids = request.form.getlist("student_ids[]")
         today = datetime.date.today().isoformat()
 
@@ -211,7 +209,7 @@ def mark_attendance():
             marks = {}
             total = 0
             for sub in subjects:
-                key = f"{sid}__{sub['_id']}"  # matches input name in HTML
+                key = f"{sid}__{sub['_id']}"  
                 val = int(request.form.get(key, 0) or 0)
                 # clamp to 0..7
                 if val < 0: val = 0
@@ -224,12 +222,12 @@ def mark_attendance():
                 "department": dept,
                 "year": year,
                 "date": today,
-                "marks": marks,   # subject_id -> int
+                "marks": marks,  
                 "total": total
             })
 
         flash("Attendance saved.", "success")
-        # keep filters after save
+     
         return redirect(url_for("mark_attendance", department=dept, year=year))
 
     return render_template(
@@ -261,7 +259,7 @@ def show_attendance():
 
         for sid in student_ids:
             record = {}
-            # Loop through subjects of AIML + selected year
+         
             for sub in subjects_col.find({"department": department, "year": year}):
                 sub_id = str(sub["_id"])
                 marks = int(request.form.get(f"{sub_id}_{sid}", 0))
@@ -285,7 +283,7 @@ def show_attendance():
         flash("✅ Attendance updated successfully!", "success")
         return redirect(url_for("show_attendance", year=year, date=date))
 
-    # GET → load subjects + students + attendance
+
     subjects = list(subjects_col.find({"department": department, "year": year}))
     students = list(students_col.find({"department": department, "year": year}))
     records_db = list(attendance_col.find({"department": department, "year": year, "date": date}))
@@ -317,7 +315,7 @@ def attendance_report():
     students = list(students_col.find({"department": department, "year": year}))
     records = list(attendance_col.find({"department": department, "year": year}))
 
-    # Merge student + attendance
+ 
     data = []
     for s in students:
         rec = next((r for r in records if str(r["student_id"]) == str(s["_id"])), {})
@@ -344,22 +342,17 @@ def attendance_report():
 
 # ----------------- DESKTOP ENTRY POINT -----------------
 
-def start_app():
-    # Start Flask in a separate thread automatically (no need to manage threads)
-    webview.create_window("AIML Attendance System", "http://127.0.0.1:5000/")
-    webview.start()
+def open_browser():
+    webbrowser.open("http://127.0.0.1:5000/")
 
 if __name__ == "__main__":
-    # Run Flask in a thread-safe way for PyWebView
-    import threading
-    from waitress import serve   # use waitress for production-safe server
+    Timer(1, open_browser).start()
+    app.run(debug=False)
 
-    def run_flask():
-        serve(app, host="127.0.0.1", port=5000)
 
-    flask_thread = threading.Thread(target=run_flask, daemon=True)
-    flask_thread.start()
+if __name__ == "__main__":
+    app.run(debug=True)
 
-    start_app()
+
 
 
